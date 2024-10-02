@@ -1,6 +1,6 @@
 import { mergeConfig } from 'vite'
 import baseConfig from './vite.config.base'
-import { useDevToolsPlugin } from './plugins'
+import { useEslintPlugin, useDevToolsPlugin } from './plugins'
 
 // https://vitejs.dev/config/
 export default mergeConfig(baseConfig, {
@@ -8,6 +8,7 @@ export default mergeConfig(baseConfig, {
 	plugins: [
 		// 使用开发者工具
 		useDevToolsPlugin(),
+		useEslintPlugin(),
 	],
 	// 依赖预构建
 	optimizeDeps: {
@@ -24,7 +25,7 @@ export default mergeConfig(baseConfig, {
 				rewrite: (path) => path.replace(/^\/api/, ''),
 				secure: false,
 				configure: (proxy: any, options: any) => {
-					// 配置此项可在响应头中看到请求的真实地址
+					// 此配置可在响应头中看到请求的真实地址
 					proxy.on('proxyRes', (proxyRes: any, req: any) => {
 						proxyRes.headers['x-real-url'] = new URL(req.url || '', options.target)?.href || ''
 					})
